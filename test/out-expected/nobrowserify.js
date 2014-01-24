@@ -1,0 +1,6 @@
+/**
+ * This file is ignored by Browserify.
+ */
+var hello = "world";
+
+module.exports = hello;

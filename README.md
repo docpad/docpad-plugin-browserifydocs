@@ -16,6 +16,8 @@
 
 Bundle scripts into browserify packages
 
+Convention: `.js.anything`
+
 
 ## Install
 
@@ -26,32 +28,15 @@ docpad install browserifybundles
 
 ## Usage
 
-Add the following to your [docpad configuration file](http://docpad.org/docs/config):
+Create a JavaScript file with the *browserify* option:
 
-``` coffee
-	plugins:
-		browserifybundles:
-			bundles: [
-				{
-					arguments: ['-r', 'rtc-videoproc/filters/grayscale']
-					entry: 'videoproc.js'
-					out:   'videoproc-bundled.js'
-				},
-				{
-					ignore: 'jquery'
-					entry:  'miniview.js'
-					out:    'miniview-bundled.js'
-				}
-			]
+``` javascript
+---
+browserify: true
+---
+
+var mypackage = require('mypackage');
 ```
-
-The `bundles` option is the list of bundles you want. Each bundle accepts the following arguments:
-
-- `entry` a String pointing to which file should be executed right away with this bundle, it is prefixed with the project's outPath if it is a relative path
-- `out` a String pointing to where the bundle should be written, it is prefixed with the project's outPath if it is a relative path
-- `ignore` a String or Array of Strings for which modules should not be bundled with this bundle
-- `require` a String or Array of Strings of paths that should be bundled with this bundle
-- `arguments` an Array of Strings that should be sent to the browserify executable
 
 
 <!-- HISTORY/ -->
