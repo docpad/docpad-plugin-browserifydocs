@@ -4,4 +4,4 @@ browserify:
 ---
 
 var hello = 'World!';
-console.log('debug.js ' + hello);
+console.log('parameter-debug.js ' + hello);

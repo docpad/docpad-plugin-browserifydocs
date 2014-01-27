@@ -65,6 +65,19 @@ browserify:
 var angular = require('angular');
 ```
 
+### Ignore
+
+Prevent a module or file from showing up in the output bundle by using [ignore](https://github.com/substack/node-browserify#bignorefile):
+
+``` javascript
+---
+browserify:
+	ignore: ['jquery']
+---
+
+var jquery = require('jquery');
+```
+
 
 <!-- HISTORY/ -->
 

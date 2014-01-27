@@ -52,20 +52,28 @@ module.exports = (BasePlugin) ->
 					# Build the Browserify object.
 					b = @browserify(file.attributes.outPath)
 
-					# Handle the require options.
+					# Handle the require option.
 					if browserifyOpts.require?
 						for requireFile, requireOptions of browserifyOpts.require
 							requireOptions = {} if typeof requireOptions is 'boolean'
 							requireOptions.basedir = browserifyOpts.basedir
 							b.require requireFile, requireOptions
 
+					# Handle the ignore option.
+					if browserifyOpts.ignore?
+						for ignoreFile, i in browserifyOpts.ignore
+							b.ignore ignoreFile
+
 					# Compile with Browserify.
-					b.bundle browserifyOpts, (err, output) =>
-						return complete(err) if err
-						# Overwrite the file with the new Browserify-ed version.
-						@safefs.writeFile file.attributes.outPath, output,  (err) ->
+					try
+						b.bundle browserifyOpts, (err, output) =>
 							return complete(err) if err
-							return complete()
+							# Overwrite the file with the new Browserify-ed version.
+							@safefs.writeFile file.attributes.outPath, output,  (err) ->
+								return complete(err) if err
+								return complete()
+					catch err
+						return complete(err)
 
 			# Execute all of the created tasks.
 			tasks.run()
