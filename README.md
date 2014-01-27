@@ -16,6 +16,8 @@
 
 Bundle scripts into browserify packages
 
+Convention: `.js.anything`
+
 
 ## Install
 
@@ -24,34 +26,83 @@ docpad install browserifybundles
 ```
 
 
-## Usage
+## Configure
 
-Add the following to your [docpad configuration file](http://docpad.org/docs/config):
+### Defaults
+
+The default configuration for this plugin is the equivalant of adding the following [browserify options](https://github.com/substack/node-browserify#bbundleopts-cb) to your [DocPad configuration file](http://docpad.org/docs/config):
 
 ``` coffee
-	plugins:
-		browserifybundles:
-			bundles: [
-				{
-					arguments: ['-r', 'rtc-videoproc/filters/grayscale']
-					entry: 'videoproc.js'
-					out:   'videoproc-bundled.js'
-				},
-				{
-					ignore: 'jquery'
-					entry:  'miniview.js'
-					out:    'miniview-bundled.js'
-				}
-			]
+plugins:
+	browserifybundles:
+		debug: false
 ```
 
-The `bundles` option is the list of bundles you want. Each bundle accepts the following arguments:
+### Usage
 
-- `entry` a String pointing to which file should be executed right away with this bundle, it is prefixed with the project's outPath if it is a relative path
-- `out` a String pointing to where the bundle should be written, it is prefixed with the project's outPath if it is a relative path
-- `ignore` a String or Array of Strings for which modules should not be bundled with this bundle
-- `require` a String or Array of Strings of paths that should be bundled with this bundle
-- `arguments` an Array of Strings that should be sent to the browserify executable
+Create a JavaScript file with the *browserify* option:
+
+``` javascript
+---
+browserify: true
+---
+
+var mypackage = require('mypackage');
+```
+
+### Require
+
+Make certain files available from outside the bundle by using [require](https://github.com/substack/node-browserify#brequirefile-opts):
+
+``` javascript
+---
+browserify:
+	require:
+		'./vendor/angular/angular.js':
+			expose: 'angular'
+---
+
+var angular = require('angular');
+```
+
+### Ignore
+
+Prevent a module or file from showing up in the output bundle by using [ignore](https://github.com/substack/node-browserify#bignorefile):
+
+``` javascript
+---
+browserify:
+	ignore: ['jquery']
+---
+
+var jquery = require('jquery');
+```
+
+### External
+
+Prevent a file or module from being loaded into the current bundle, instead referencing from another bundle, by using [external](https://github.com/substack/node-browserify#bexternalfile).
+
+``` javascript
+---
+browserify:
+	external: ['jquery']
+---
+
+var jquery = require('jquery');
+```
+
+### Exclude
+
+Prevent a module name or file from showing up in the output bundle by using [exclude](https://github.com/substack/node-browserify#bexcludefile).
+
+``` javascript
+---
+browserify:
+	exclude: ['jquery']
+---
+
+var jquery = require('jquery');
+```
 
 
 <!-- HISTORY/ -->

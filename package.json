@@ -45,7 +45,9 @@
   },
   "dependencies": {
     "safeps": "~2.2.11",
-    "browserify": "~3.20.0"
+    "browserify": "~3.20.0",
+    "safefs": "~3.1.0",
+    "taskgroup": "~3.3.6"
   },
   "devDependencies": {
     "docpad": "6",

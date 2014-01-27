@@ -1,62 +1,83 @@
 # Export Plugin
 module.exports = (BasePlugin) ->
-	# Import
-	pathUtil = require('path')
-
 	# Define Plugin
 	class BrowserifybundlesPlugin extends BasePlugin
+
 		# Plugin name
 		name: 'browserifybundles'
 
-		# Plugin config
+		# Constructor
+		# Retrieves dependencies.
+		constructor: () ->
+			super
+
+			@browserify = require 'browserify'
+			@path = require 'path'
+			@safefs = require 'safefs'
+			@taskgroup = require 'taskgroup'
+
+			@
+
+		# Configuration
 		config:
-			bundles: []
-			browserifyPath: pathUtil.resolve(__dirname, '..', 'node_modules', '.bin', 'browserify')
+			# When true, will add a source map inline to the end of the bundle.
+			debug: false
 
 		# Write After
-		# Used to bundle the editor
-		writeAfter: (opts,next) ->
-			# Prepare
-			config = @getConfig()
-			{rootPath, outPath} = @docpad.getConfig()
+		writeAfter: (opts, next) ->
+			# Create the task group to handle multiple Browserify files.
+			tasks = new @taskgroup.TaskGroup
+				concurrency: 0
 
-			# Bundle the scripts the editor uses together
-			commands = for bundle in config.bundles
-				command = []
+			# Set up the next callback.
+			tasks.once 'complete', (err) ->
+				return next(err) if err
+				next()
 
-				# Executable
-				command.push(config.browserifyPath)
+			# Create a new task for each Browserify files.
+			opts.collection.findAll({browserify: $exists: true}).each (file) =>
+				# Skip the file when the option is explicitly false.
+				return if file.get('browserify') is false
 
-				# Entry
-				command.push(pathUtil.resolve(outPath, bundle.entry))
+				tasks.addTask (complete) =>
+					# Build the Browserify options.
+					browserifyOpts = file.get('browserify')
+					browserifyOpts = {} if typeof browserifyOpts is 'boolean'
+					browserifyOpts.basedir = @path.join file.attributes.outDirPath, file.attributes.relativeOutDirPath
 
-				# Requires
-				if bundle.require
-					if Array.isArray(bundle.require)
-						for r in bundle.require
-							command.push('-r', pathUtil.resolve(outPath, bundle.r))
-					else
-						command.push('-r', pathUtil.resolve(outPath, bundle.require))
+					# Provide the default configuration options if needed.
+					for own key, value of @getConfig()
+						browserifyOpts[key] = value if not browserifyOpts[key]?
 
-				# Ignores
-				if bundle.ignore
-					if Array.isArray(bundle.ignore)
-						for i in bundle.ignore
-							command.push('-i', i)
-					else
-						command.push('-i', bundle.ignore)
+					# Build the Browserify object.
+					b = @browserify(file.attributes.outPath)
 
-				# Out
-				command.push('-o', pathUtil.resolve(outPath, bundle.out))
+					# Handle the require option.
+					if browserifyOpts.require?
+						for requireFile, requireOptions of browserifyOpts.require
+							requireOptions = {} if typeof requireOptions is 'boolean'
+							requireOptions.basedir = browserifyOpts.basedir
+							b.require requireFile, requireOptions
 
-				# Arguments
-				command.push(bundle.arguments...)  if bundle.arguments? and Array.isArray(bundle.arguments)
+					# Handle the parameters which take single arrays.
+					for option in ['ignore', 'external', 'exclude']
+						if browserifyOpts[option]?
+							for entry, i in browserifyOpts[option]
+								b[option] entry
 
-				# Return command in our for loop
-				command
+					# Compile with Browserify.
+					try
+						b.bundle browserifyOpts, (err, output) =>
+							return complete(err) if err
+							# Overwrite the file with the new Browserify-ed version.
+							@safefs.writeFile file.attributes.outPath, output,  (err) ->
+								return complete(err) if err
+								return complete()
+					catch err
+						return complete(err)
 
-			# Execute
-			require('safeps').spawnMultiple(commands, {cwd:rootPath, stdio:'inherit'}, next)
+			# Execute all of the created tasks.
+			tasks.run()
 
 			# Chain
 			@
