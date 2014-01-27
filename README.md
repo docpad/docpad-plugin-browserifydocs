@@ -78,6 +78,32 @@ browserify:
 var jquery = require('jquery');
 ```
 
+### External
+
+Prevent a file or module from being loaded into the current bundle, instead referencing from another bundle, by using [external](https://github.com/substack/node-browserify#bexternalfile).
+
+``` javascript
+---
+browserify:
+	external: ['jquery']
+---
+
+var jquery = require('jquery');
+```
+
+### Exclude
+
+Prevent a module name or file from showing up in the output bundle by using [exclude](https://github.com/substack/node-browserify#bexcludefile).
+
+``` javascript
+---
+browserify:
+	exclude: ['jquery']
+---
+
+var jquery = require('jquery');
+```
+
 
 <!-- HISTORY/ -->
 

@@ -59,10 +59,11 @@ module.exports = (BasePlugin) ->
 							requireOptions.basedir = browserifyOpts.basedir
 							b.require requireFile, requireOptions
 
-					# Handle the ignore option.
-					if browserifyOpts.ignore?
-						for ignoreFile, i in browserifyOpts.ignore
-							b.ignore ignoreFile
+					# Handle the parameters which take single arrays.
+					for option in ['ignore', 'external', 'exclude']
+						if browserifyOpts[option]?
+							for entry, i in browserifyOpts[option]
+								b[option] entry
 
 					# Compile with Browserify.
 					try
