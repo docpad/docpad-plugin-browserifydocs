@@ -1,5 +1,10 @@
 {
-  "name": "docpad-plugin-eco-testsite",
+  "name": "docpad-plugin-browserifydocs-testsite",
   "version": "0.1.0",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "rtc-videoproc": "0.7.0",
+    "miniview": "1.2.0",
+    "jquery": "~2.1.0"
+  }
 }

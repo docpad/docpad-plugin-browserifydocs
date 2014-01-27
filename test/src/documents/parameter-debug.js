@@ -1,6 +1,6 @@
 ---
 browserify:
-	debug: false
+	debug: true
 ---
 
 var hello = 'World!';

@@ -1,22 +1,9 @@
 # Export Plugin
 module.exports = (BasePlugin) ->
 	# Define Plugin
-	class BrowserifybundlesPlugin extends BasePlugin
-
+	class BrowserifydocsPlugin extends BasePlugin
 		# Plugin name
-		name: 'browserifybundles'
-
-		# Constructor
-		# Retrieves dependencies.
-		constructor: () ->
-			super
-
-			@browserify = require 'browserify'
-			@path = require 'path'
-			@safefs = require 'safefs'
-			@taskgroup = require 'taskgroup'
-
-			@
+		name: 'browserifydocs'
 
 		# Configuration
 		config:
@@ -25,32 +12,35 @@ module.exports = (BasePlugin) ->
 
 		# Write After
 		writeAfter: (opts, next) ->
-			# Create the task group to handle multiple Browserify files.
-			tasks = new @taskgroup.TaskGroup
-				concurrency: 0
+			# Import
+			pathUtil = require('path')
+			browserify = require('browserify')
+			safefs = require('safefs')
+			{TaskGroup} = require('taskgroup')
 
-			# Set up the next callback.
-			tasks.once 'complete', (err) ->
-				return next(err) if err
-				next()
+			# Prepare
+			plugin = @
+
+			# Create the task group to handle multiple Browserify files.
+			tasks = new TaskGroup({concurrency:0, next})
 
 			# Create a new task for each Browserify files.
-			opts.collection.findAll({browserify: $exists: true}).each (file) =>
+			opts.collection.findAll({browserify: $exists: true}).each (file) ->
 				# Skip the file when the option is explicitly false.
-				return if file.get('browserify') is false
+				return  if file.get('browserify') is false
 
-				tasks.addTask (complete) =>
+				tasks.addTask (complete) ->
 					# Build the Browserify options.
 					browserifyOpts = file.get('browserify')
 					browserifyOpts = {} if typeof browserifyOpts is 'boolean'
-					browserifyOpts.basedir = @path.join file.attributes.outDirPath, file.attributes.relativeOutDirPath
+					browserifyOpts.basedir = pathUtil.join(file.attributes.outDirPath, file.attributes.relativeOutDirPath)
 
 					# Provide the default configuration options if needed.
-					for own key, value of @getConfig()
+					for own key, value of plugin.getConfig()
 						browserifyOpts[key] = value if not browserifyOpts[key]?
 
 					# Build the Browserify object.
-					b = @browserify(file.attributes.outPath)
+					b = browserify(file.attributes.outPath)
 
 					# Handle the require option.
 					if browserifyOpts.require?
@@ -67,10 +57,10 @@ module.exports = (BasePlugin) ->
 
 					# Compile with Browserify.
 					try
-						b.bundle browserifyOpts, (err, output) =>
+						b.bundle browserifyOpts, (err, output) ->
 							return complete(err) if err
 							# Overwrite the file with the new Browserify-ed version.
-							@safefs.writeFile file.attributes.outPath, output,  (err) ->
+							safefs.writeFile file.attributes.outPath, output,  (err) ->
 								return complete(err) if err
 								return complete()
 					catch err
