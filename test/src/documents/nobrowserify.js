@@ -3,4 +3,4 @@
  */
 var hello = "world";
 
-module.exports = hello;
+module.exports = 'nobrowserify ' + hello;

@@ -26,7 +26,19 @@ docpad install browserifybundles
 ```
 
 
-## Usage
+## Configure
+
+### Defaults
+
+The default configuration for this plugin is the equivalant of adding the following [browserify options](https://github.com/substack/node-browserify#bbundleopts-cb) to your [DocPad configuration file](http://docpad.org/docs/config):
+
+``` coffee
+plugins:
+	browserifybundles:
+		debug: false
+```
+
+### Usage
 
 Create a JavaScript file with the *browserify* option:
 
@@ -36,6 +48,21 @@ browserify: true
 ---
 
 var mypackage = require('mypackage');
+```
+
+### Require
+
+Make certain files available from outside the bundle by using [require](https://github.com/substack/node-browserify#brequirefile-opts):
+
+``` javascript
+---
+browserify:
+	require:
+		'./vendor/angular/angular.js':
+			expose: 'angular'
+---
+
+var angular = require('angular');
 ```
 
 

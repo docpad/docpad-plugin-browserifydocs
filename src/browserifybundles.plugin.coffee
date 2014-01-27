@@ -20,7 +20,8 @@ module.exports = (BasePlugin) ->
 
 		# Configuration
 		config:
-			browserify: true
+			# When true, will add a source map inline to the end of the bundle.
+			debug: false
 
 		# Write After
 		writeAfter: (opts, next) ->
@@ -44,8 +45,21 @@ module.exports = (BasePlugin) ->
 					browserifyOpts = {} if typeof browserifyOpts is 'boolean'
 					browserifyOpts.basedir = @path.join file.attributes.outDirPath, file.attributes.relativeOutDirPath
 
-					# Compile with Browserify.
+					# Provide the default configuration options if needed.
+					for own key, value of @getConfig()
+						browserifyOpts[key] = value if not browserifyOpts[key]?
+
+					# Build the Browserify object.
 					b = @browserify(file.attributes.outPath)
+
+					# Handle the require options.
+					if browserifyOpts.require?
+						for requireFile, requireOptions of browserifyOpts.require
+							requireOptions = {} if typeof requireOptions is 'boolean'
+							requireOptions.basedir = browserifyOpts.basedir
+							b.require requireFile, requireOptions
+
+					# Compile with Browserify.
 					b.bundle browserifyOpts, (err, output) =>
 						return complete(err) if err
 						# Overwrite the file with the new Browserify-ed version.
