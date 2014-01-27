@@ -32,12 +32,12 @@ module.exports = (BasePlugin) ->
 				tasks.addTask (complete) ->
 					# Build the Browserify options.
 					browserifyOpts = file.get('browserify')
-					browserifyOpts = {} if typeof browserifyOpts is 'boolean'
+					browserifyOpts = {}  if typeof browserifyOpts is 'boolean'
 					browserifyOpts.basedir = pathUtil.join(file.attributes.outDirPath, file.attributes.relativeOutDirPath)
 
 					# Provide the default configuration options if needed.
 					for own key, value of plugin.getConfig()
-						browserifyOpts[key] = value if not browserifyOpts[key]?
+						browserifyOpts[key] = value  if not browserifyOpts[key]?
 
 					# Build the Browserify object.
 					b = browserify(file.attributes.outPath)
@@ -45,24 +45,30 @@ module.exports = (BasePlugin) ->
 					# Handle the require option.
 					if browserifyOpts.require?
 						for requireFile, requireOptions of browserifyOpts.require
-							requireOptions = {} if typeof requireOptions is 'boolean'
+							requireOptions = {}  if typeof requireOptions is 'boolean'
 							requireOptions.basedir = browserifyOpts.basedir
-							b.require requireFile, requireOptions
+							b.require(requireFile, requireOptions)
 
 					# Handle the parameters which take single arrays.
 					for option in ['ignore', 'external', 'exclude']
 						if browserifyOpts[option]?
 							for entry, i in browserifyOpts[option]
-								b[option] entry
+								b[option](entry)
 
 					# Compile with Browserify.
 					try
 						b.bundle browserifyOpts, (err, output) ->
 							return complete(err) if err
-							# Overwrite the file with the new Browserify-ed version.
-							safefs.writeFile file.attributes.outPath, output,  (err) ->
-								return complete(err) if err
-								return complete()
+
+							# Update the out content for the document
+							file.set({
+								contentRendered: output
+								contentRenderedWithoutLayouts: output
+							})
+
+							# Update the out content for the file
+							file.action('write', complete)
+
 					catch err
 						return complete(err)
 
