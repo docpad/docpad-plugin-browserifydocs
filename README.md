@@ -24,6 +24,19 @@ docpad install browserifydocs
 ```
 
 
+## Usage
+
+Create a JavaScript file with the *browserify* option:
+
+``` javascript
+---
+browserify: true
+---
+
+var mypackage = require('mypackage');
+```
+
+
 ## Configure
 
 ### Defaults
@@ -36,17 +49,6 @@ plugins:
 		debug: false
 ```
 
-### Usage
-
-Create a JavaScript file with the *browserify* option:
-
-``` javascript
----
-browserify: true
----
-
-var mypackage = require('mypackage');
-```
 
 ### Require
 
