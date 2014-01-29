@@ -20,6 +20,7 @@ module.exports = (BasePlugin) ->
 
 			# Prepare
 			plugin = @
+			docpad = @docpad
 
 			# Create the task group to handle multiple Browserify files.
 			tasks = new TaskGroup({concurrency:0, next})
@@ -58,7 +59,7 @@ module.exports = (BasePlugin) ->
 					# Compile with Browserify.
 					try
 						b.bundle browserifyOpts, (err, output) ->
-							return complete(err) if err
+							return complete(err)  if err
 
 							# Update the out content for the document
 							file.set({
@@ -67,7 +68,12 @@ module.exports = (BasePlugin) ->
 							})
 
 							# Update the out content for the file
-							file.action('write', complete)
+							file.action 'write', (err) ->
+								return complete(err)  if err
+
+								docpad.log('info', 'Browserified', file.getFilePath())
+
+								return complete()
 
 					catch err
 						return complete(err)
