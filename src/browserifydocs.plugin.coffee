@@ -64,7 +64,9 @@ module.exports = (BasePlugin) ->
 					# Compile with Browserify.
 					addTask 'compile', (complete) ->
 						b.bundle browserifyOpts, (err, _output) ->
-							return complete(err)  if err
+							if err
+								err.message = "Browserify failed on: #{filePath}\n"+err.message
+								return complete(err)
 							output = _output
 							return complete()
 

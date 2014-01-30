@@ -1,5 +1,8 @@
 # History
 
+- v2.0.4 January 30, 2014
+	- Always mention which file failed in an error message
+
 - v2.0.3 January 30, 2014
 	- Potentially more robust/accurate writing
 
