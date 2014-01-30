@@ -63,6 +63,7 @@ module.exports = (BasePlugin) ->
 
 					# Compile with Browserify.
 					addTask 'compile', (complete) ->
+						docpad.log('debug', "Browserifing: #{filePath}")
 						b.bundle browserifyOpts, (err, _output) ->
 							if err
 								err.message = "Browserify failed on: #{filePath}\n"+err.message
@@ -80,7 +81,7 @@ module.exports = (BasePlugin) ->
 						# Update the out content for the file
 						file.action 'write', (err) ->
 							return complete(err)  if err
-							docpad.log('info', "Browserified #{filePath}")
+							docpad.log('info', "Browserified: #{filePath}")
 							return complete()
 
 			# Execute all of the created tasks.

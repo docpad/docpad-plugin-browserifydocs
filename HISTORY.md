@@ -1,5 +1,8 @@
 # History
 
+- v2.0.5 January 30, 2014
+	- Add a debug level log about which file we are currently browserifying
+
 - v2.0.4 January 30, 2014
 	- Always mention which file failed in an error message
 
