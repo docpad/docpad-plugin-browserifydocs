@@ -1,5 +1,8 @@
 # History
 
+- v2.0.3 January 30, 2014
+	- Potentially more robust/accurate writing
+
 - v2.0.2 January 28, 2014
 	- Added browserify success log message
 

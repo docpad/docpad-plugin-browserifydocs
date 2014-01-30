@@ -23,16 +23,21 @@ module.exports = (BasePlugin) ->
 			docpad = @docpad
 
 			# Create the task group to handle multiple Browserify files.
-			tasks = new TaskGroup({concurrency:0, next})
+			tasks = new TaskGroup('browserify docs tasks', {concurrency:0, next})
 
 			# Create a new task for each Browserify files.
 			opts.collection.findAll({browserify: $exists: true}).each (file) ->
-				# Skip the file when the option is explicitly false.
-				return  if file.get('browserify') is false
+				# Skip the file when the option is explicitly false
+				browserifyOpts = file.get('browserify')
+				return  if browserifyOpts is false
 
-				tasks.addTask (complete) ->
+				# Prepare
+				filePath = file.getFilePath()
+				output = null
+
+				# Start
+				tasks.addGroup filePath, (addGroup, addTask) ->
 					# Build the Browserify options.
-					browserifyOpts = file.get('browserify')
 					browserifyOpts = {}  if typeof browserifyOpts is 'boolean'
 					browserifyOpts.basedir = pathUtil.join(file.attributes.outDirPath, file.attributes.relativeOutDirPath)
 
@@ -57,26 +62,24 @@ module.exports = (BasePlugin) ->
 								b[option](entry)
 
 					# Compile with Browserify.
-					try
-						b.bundle browserifyOpts, (err, output) ->
+					addTask 'compile', (complete) ->
+						b.bundle browserifyOpts, (err, _output) ->
 							return complete(err)  if err
+							output = _output
+							return complete()
 
-							# Update the out content for the document
-							file.set({
-								contentRendered: output
-								contentRenderedWithoutLayouts: output
-							})
+					addTask 'apply', (complete) ->
+						# Update the out content for the document
+						file.set({
+							contentRendered: output
+							contentRenderedWithoutLayouts: output
+						})
 
-							# Update the out content for the file
-							file.action 'write', (err) ->
-								return complete(err)  if err
-
-								docpad.log('info', 'Browserified', file.getFilePath())
-
-								return complete()
-
-					catch err
-						return complete(err)
+						# Update the out content for the file
+						file.action 'write', (err) ->
+							return complete(err)  if err
+							docpad.log('info', "Browserified #{filePath}")
+							return complete()
 
 			# Execute all of the created tasks.
 			tasks.run()
