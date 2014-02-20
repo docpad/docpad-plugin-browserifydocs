@@ -1,5 +1,8 @@
 # History
 
+- v2.1.0 February 20, 2014
+	- Updated dependencies
+
 - v2.0.5 January 30, 2014
 	- Add a debug level log about which file we are currently browserifying
 
