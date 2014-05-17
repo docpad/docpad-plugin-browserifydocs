@@ -1,6 +1,6 @@
 {
   "name": "docpad-plugin-browserifydocs",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Browserify your documents by adding the `browserify: true` meta data",
   "homepage": "http://docpad.org/plugin/browserifydocs",
   "license": {
@@ -49,9 +49,9 @@
     "docpad": "6"
   },
   "dependencies": {
-    "browserify": "~3.30.1",
-    "safefs": "~3.1.0",
-    "taskgroup": "~3.3.6"
+    "browserify": "~4.1.4",
+    "safefs": "~3.1.1",
+    "taskgroup": "~3.4.0"
   },
   "devDependencies": {
     "docpad": "6",
