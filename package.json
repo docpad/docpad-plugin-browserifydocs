@@ -56,7 +56,7 @@
   "devDependencies": {
     "docpad": "6",
     "coffee-script": "~1.7.1",
-    "projectz": "~0.3.11"
+    "projectz": "~0.3.13"
   },
   "main": "./out/browserifydocs.plugin.js",
   "scripts": {
