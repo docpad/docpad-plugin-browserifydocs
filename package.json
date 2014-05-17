@@ -3,9 +3,7 @@
   "version": "2.2.0",
   "description": "Browserify your documents by adding the `browserify: true` meta data",
   "homepage": "http://docpad.org/plugin/browserifydocs",
-  "license": {
-    "type": "MIT"
-  },
+  "license": "MIT",
   "badges": {
     "travis": true,
     "npm": true,
