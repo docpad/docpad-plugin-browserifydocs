@@ -50,14 +50,14 @@
     "docpad": "6"
   },
   "dependencies": {
-    "browserify": "~4.1.4",
-    "safefs": "~3.1.1",
-    "taskgroup": "~3.4.0"
+    "browserify": "^4.1.4",
+    "safefs": "^3.1.1",
+    "taskgroup": "^4.2.0"
   },
   "devDependencies": {
     "docpad": "6",
-    "coffee-script": "~1.8.0",
-    "projectz": "~0.3.17"
+    "coffee-script": "^1.9.0",
+    "projectz": "^0.4.2"
   },
   "main": "./out/browserifydocs.plugin.js",
   "scripts": {
