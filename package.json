@@ -1,22 +1,58 @@
 {
+  "engines": {
+    "node": ">=0.4"
+  },
+  "dependencies": {
+    "browserify": "^4.1.4",
+    "safefs": "^3.1.1",
+    "taskgroup": "^4.2.0"
+  },
+  "peerDependencies": {
+    "docpad": "6"
+  },
+  "devDependencies": {
+    "docpad": "6",
+    "coffee-script": "^1.9.1",
+    "projectz": "^1.1.0"
+  },
+  "scripts": {
+    "test": "node ./out/browserifydocs.test.js",
+    "our:compile": "coffee -bco ./out ./src",
+    "our:meta:projectz": "projectz compile"
+  },
   "name": "docpad-plugin-browserifydocs",
   "version": "2.2.0",
   "description": "Browserify your documents by adding the `browserify: true` meta data",
   "homepage": "http://docpad.org/plugin/browserifydocs",
-  "license": {
-    "type": "MIT"
-  },
+  "license": "MIT",
   "badges": {
-    "travis": true,
-    "npm": true,
-    "npmdownloads": true,
-    "david": true,
-    "daviddev": true,
-    "gratipay": "docpad",
-    "flattr": "344188/balupton-on-Flattr",
-    "paypal": "QB8GQPZAH84N6",
-    "bitcoin": "https://coinbase.com/checkouts/9ef59f5479eec1d97d63382c9ebcb93a",
-    "wishlist": "http://amzn.com/w/2F8TXKSNAFG4V"
+    "list": [
+      "travisci",
+      "npmversion",
+      "npmdownloads",
+      "daviddm",
+      "daviddmdev",
+      "---",
+      "patreon",
+      "opencollective",
+      "gratipay",
+      "flattr",
+      "paypal",
+      "bitcoin",
+      "wishlist",
+      "---",
+      "slackin"
+    ],
+    "config": {
+      "patreonUsername": "bevry",
+      "opencollectiveUsername": "bevry",
+      "gratipayUsername": "bevry",
+      "flattrUsername": "balupton",
+      "paypalURL": "https://bevry.me/paypal",
+      "bitcoinURL": "https://bevry.me/bitcoin",
+      "wishlistURL": "https://bevry.me/wishlist",
+      "slackinURL": "https://slack.bevry.me"
+    }
   },
   "keywords": [
     "docpad",
@@ -29,12 +65,13 @@
   ],
   "author": "2014+ Bevry Pty Ltd <us@bevry.me> (http://bevry.me)",
   "maintainers": [
-    "Benjamin Lupton <b@lupton.cc> (https://github.com/balupton)",
-    "Rob Loach <robloach@gmail.com> (https://github.com/RobLoach)"
+    "Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
+    "Rob Loach <robloach@gmail.com> (http://robloach.net)"
   ],
   "contributors": [
-    "Benjamin Lupton <b@lupton.cc> (https://github.com/balupton)",
-    "Rob Loach <robloach@gmail.com> (https://github.com/RobLoach)"
+    "Benjamin Lupton <b@lupton.cc> (http://balupton.com)",
+    "Rob Loach <robloach@gmail.com> (http://robloach.net)",
+    "vsopvsop (https://github.com/vsopvsop)"
   ],
   "bugs": {
     "url": "https://github.com/docpad/docpad-plugin-browserifydocs/issues"
@@ -43,26 +80,7 @@
     "type": "git",
     "url": "https://github.com/docpad/docpad-plugin-browserifydocs.git"
   },
-  "engines": {
-    "node": ">=0.4"
-  },
-  "peerDependencies": {
-    "docpad": "6"
-  },
-  "dependencies": {
-    "browserify": "^4.1.4",
-    "safefs": "^3.1.1",
-    "taskgroup": "^4.2.0"
-  },
-  "devDependencies": {
-    "docpad": "6",
-    "coffee-script": "^1.9.1",
-    "projectz": "^0.5.0"
-  },
   "main": "./out/browserifydocs.plugin.js",
-  "scripts": {
-    "test": "node ./out/browserifydocs.test.js"
-  },
   "cakeConfiguration": {
     "COFFEE_SRC_PATH": "src"
   }
