@@ -1,6 +1,6 @@
 {
   "name": "docpad-plugin-browserifydocs",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Browserify your documents by adding the `browserify: true` meta data",
   "homepage": "https://github.com/docpad/docpad-plugin-browserifydocs",
   "license": "MIT",
