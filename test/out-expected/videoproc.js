@@ -1,4 +1,28 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/* jshint node: true */
+/* global window: false */
+'use strict';
+
+var TEST_PROPS = ['r', 'webkitR', 'mozR', 'oR', 'msR'];
+
+/**
+  ### raf(callback)
+
+  Request animation frame helper.
+
+  <<< examples/raf.js
+
+**/
+
+module.exports = typeof window != 'undefined' && (function() {
+  for (var ii = 0; ii < TEST_PROPS.length; ii++) {
+    window.animFrame = window.animFrame ||
+      window[TEST_PROPS[ii] + 'equestAnimationFrame'];
+  } // for
+
+  return animFrame;
+})();
+},{}],2:[function(require,module,exports){
 module.exports = function(imageData) {
   var channels = imageData.data;
   var rgb = [];
@@ -30,7 +54,7 @@ module.exports = function(imageData) {
 
   return true;
 };
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /* jshint node: true */
 /* global document: false */
 /* global HTMLVideoElement: false */
@@ -322,32 +346,8 @@ function createFacade(canvas, vid, opts) {
     add: addProcessor
   };
 }
-},{"fdom/raf":3}],3:[function(require,module,exports){
-/* jshint node: true */
-/* global window: false */
-'use strict';
-
-var TEST_PROPS = ['r', 'webkitR', 'mozR', 'oR', 'msR'];
-
-/**
-  ### raf(callback)
-
-  Request animation frame helper.
-
-  <<< examples/raf.js
-
-**/
-
-module.exports = typeof window != 'undefined' && (function() {
-  for (var ii = 0; ii < TEST_PROPS.length; ii++) {
-    window.animFrame = window.animFrame ||
-      window[TEST_PROPS[ii] + 'equestAnimationFrame'];
-  } // for
-
-  return animFrame;
-})();
-},{}],4:[function(require,module,exports){
+},{"fdom/raf":1}],4:[function(require,module,exports){
 // our code
 var videoproc = require('rtc-videoproc');
 var grayscale = require('rtc-videoproc/filters/grayscale');
-},{"rtc-videoproc":2,"rtc-videoproc/filters/grayscale":1}]},{},[4])
+},{"rtc-videoproc":3,"rtc-videoproc/filters/grayscale":2}]},{},[4])

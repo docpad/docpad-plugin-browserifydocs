@@ -24,11 +24,13 @@
 Browserify your documents by adding the `browserify: true` meta data
 
 
-## Install
+<!-- INSTALL/ -->
 
-```
-docpad install browserifydocs
-```
+<h2>Install</h2>
+
+Install this DocPad plugin by entering <code>docpad install browserifydocs</code> into your terminal.
+
+<!-- /INSTALL -->
 
 
 ## Usage
