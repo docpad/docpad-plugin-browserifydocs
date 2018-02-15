@@ -23,7 +23,7 @@ module.exports = (BasePlugin) ->
 			docpad = @docpad
 
 			# Create the task group to handle multiple Browserify files.
-			tasks = new TaskGroup('browserify docs tasks', {concurrency:0, next})
+			tasks = TaskGroup.create('browserify docs tasks', {concurrency:0}).done(next)
 
 			# Create a new task for each Browserify files.
 			opts.collection.findAll({browserify: $exists: true}).each (file) ->
