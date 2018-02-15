@@ -1,5 +1,10 @@
 # History
 
+## v2.4.0 2018 February 16
+- Now compiled with CoffeeScript v2
+- Updated dependencies, although `browserify` remains at v4
+- Updated base files
+
 ## v2.3.0 2017 April 17
 - Updated base files
 
