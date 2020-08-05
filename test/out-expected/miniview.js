@@ -42,7 +42,7 @@
 
   $ = this.$ || (typeof window !== "undefined" && window !== null ? window.$ : void 0) || ((function() {
     try {
-      return typeof require === "function" ? require() : void 0;
+      return typeof require === "function" ? require('jquery') : void 0;
     } catch (_error) {}
   })());
 
@@ -150,7 +150,7 @@
 
 }).call(this);
 
-},{"extendonclass":2,:1}],4:[function(require,module,exports){
+},{"extendonclass":2,"jquery":1}],4:[function(require,module,exports){
 // our code
 var miniview = require('miniview');
 },{"miniview":3}]},{},[4])

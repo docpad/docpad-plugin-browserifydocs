@@ -6,7 +6,6 @@ var hello = "world";
 
 module.exports = 'nobrowserify ' + hello;
 console.log(module.exports);
-
 },{}],2:[function(require,module,exports){
 var nobrowserify = require('./nobrowserify')
 console.log('require-nobrowserify.js ' + nobrowserify);
