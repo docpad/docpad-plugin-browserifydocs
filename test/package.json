@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "jquery": "~2.1.0",
+    "jquery": "~3.5.0",
     "miniview": "1.2.0",
     "rtc-videoproc": "0.7.0"
   }
